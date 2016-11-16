@@ -268,7 +268,19 @@ class UbuntuCorpusTrainer(Trainer):
         """
         Extract a tar file at the specified file path.
         """
+        import os
         import tarfile
+
+        dir_name = file_path.split('/')[-1].split('.')[0]
+
+        extracted_file_directory = os.path.join(
+            self.data_directory,
+            dir_name
+        )
+
+        # Do not extract if the extracted directory already exists
+        if os.path.isdir(extracted_file_directory):
+            return False
 
         self.logger.info('Starting file extraction')
 
@@ -283,7 +295,7 @@ class UbuntuCorpusTrainer(Trainer):
 
         self.logger.info('File extraction complete')
 
-        return self.data_directory
+        return True
 
     def train(self):
         import glob
